@@ -1,22 +1,24 @@
 clc, close all, clear all; 
-net_name='TLN.inp';
+net_name='TLN.inp';%net_name='Hanoi.inp';
 d=epanet(net_name);
-disp('³É¹¦¼ÓÔØEPANETµÄ.inpÎÄ¼ş³É¹¦£¡');
+disp('æˆåŠŸåŠ è½½EPANETçš„.inpæ–‡ä»¶æˆåŠŸï¼');
 disp('***************************************************')
-disp(['µ±Ç°¹ÜÍø£º',net_name]);
+disp(['å½“å‰ç®¡ç½‘ï¼š',net_name]);
 disp('***************************************************')
 
 SearchAgents = 50;
 Max_iteration = 150;
 D = [25.4, 50.8, 76.2, 101.6, 152.4, 203.2, 254, 304.8, 355.6, 406.4, 457.2, 508, 558.8, 609.6];
 C = [2, 5, 8, 11, 16, 23, 32, 50, 60, 90, 130, 170, 300, 550];
+% D = [304.8,406.4,508,609.6,762,1016];%ç®¡å¾„ï¼Œå•ä½ï¼šm
+% C = [45.73,70.40,98.38,129.33,180.75,278.28];%ç®¡å¾„å¯¹åº”çš„ç®¡é“é€ ä»·ï¼Œå•ä½ï¼šç¾å…ƒ/m
 
 %[gbest_pos,gbest_cost,gbest_fitness,de_curve]=EnDE(net_name,d,D,C,SearchAgents,Max_iteration);
 [gbest_pos,gbest_cost,gbest_fitness,de_curve]=original_DE(net_name,d,D,C,SearchAgents,Max_iteration);
 
-disp([ '×îÓÅ³É±¾»¨·Ñ: ' num2str(gbest_cost)]);
-disp([ '×îÓÅÊÊÓ¦¶ÈÖµ: ' num2str(gbest_fitness)]);
-disp(['×îÓÅ¹ÜµÀÖ±¾¶Ñ¡Ôñ: ' num2str(D(gbest_pos))]);
+disp([ 'æœ€ä¼˜æˆæœ¬èŠ±è´¹: ' num2str(gbest_cost)]);
+disp([ 'æœ€ä¼˜é€‚åº”åº¦å€¼: ' num2str(gbest_fitness)]);
+disp(['æœ€ä¼˜ç®¡é“ç›´å¾„é€‰æ‹©: ' num2str(D(gbest_pos))]);
 d.openHydraulicAnalysis; 
 d.initializeHydraulicAnalysis;
 d.setLinkDiameter(D(gbest_pos));
@@ -27,12 +29,12 @@ Pressure =  d.getNodePressure;
 LinkHeadLoss = d.getLinkHeadloss; 
 TotalHeadLoss = sum(LinkHeadLoss);  
 d.closeHydraulicAnalysis;  
-disp('Velocity£º');
+disp('Velocityï¼š');
 disp(Velocity);
-disp('Pressure£º');
+disp('Pressureï¼š');
 disp(Pressure);
-disp('Ã¿Ìõ¹ÜµÀË®Í·ËğÊ§£º'); disp(LinkHeadLoss);
-disp(['Ë®Í·ËğÊ§×ÜºÍ£º', num2str(TotalHeadLoss)]);
+disp('æ¯æ¡ç®¡é“æ°´å¤´æŸå¤±ï¼š'); disp(LinkHeadLoss);
+disp(['æ°´å¤´æŸå¤±æ€»å’Œï¼š', num2str(TotalHeadLoss)]);
 
 plot(de_curve,'b','LineWidth',1.5);
 title('Convergence curve','FontSize',15)
